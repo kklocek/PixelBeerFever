@@ -13,38 +13,45 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 /**
  * Created by Konrad on 2016-04-17.
  */
-public class About extends ScreenAdapter {
+public class About extends GameScreen {
 
-    private SpriteBatch batch;
-    private OrthographicCamera camera;
-    private Viewport viewport;
-    private LowRez game;
     private Texture aboutTexture;
 
-    public About(LowRez lowRez) {
-        this.game = lowRez;
-        batch = new SpriteBatch();
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, GameConstants.WIDTH, GameConstants.HEIGHT);
-        camera.update();
-        viewport = new StretchViewport(GameConstants.WIDTH, GameConstants.HEIGHT, camera);
+    public About(LowRez game) {
+        super(game);
         aboutTexture = new Texture(Gdx.files.internal("about.png"));
     }
 
     @Override
+    public void goLeft() {
+
+    }
+
+    @Override
+    public void goRight() {
+
+    }
+
+    @Override
+    public void pickBeer() {
+
+    }
+
+    @Override
     public void render(float delta) {
-        batch.setProjectionMatrix(camera.projection);
-        batch.setTransformMatrix(camera.view);
+        getBatch().setProjectionMatrix(getCamera().projection);
+        getBatch().setTransformMatrix(getCamera().view);
         Gdx.gl.glClearColor(255,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        camera.update();
-        viewport.apply();
-        batch.begin();
-        batch.draw(aboutTexture, 0, 128);
-        batch.end();
+        getCamera().update();
+        getViewport().apply();
+        getBatch().begin();
+        getBatch().draw(aboutTexture, 0, 128);
+        getControls().update(delta);
+        getBatch().end();
 
         if(Gdx.input.justTouched()) {
-            game.backToMenu();
+            getGame().backToMenu();
         }
     }
 
@@ -53,8 +60,4 @@ public class About extends ScreenAdapter {
         aboutTexture.dispose();
     }
 
-    @Override
-    public void resize(int width, int height) {
-        viewport.update(width, height);
-    }
 }

@@ -22,7 +22,6 @@ public class VisitorEntrance {
     private float ratio = 2;
     private int level = 1;
     private int previousEntrance = -1;
-    private boolean previousType = false;
 
     public VisitorEntrance(Main gameManager) {
         rnd = new Random();
@@ -44,7 +43,7 @@ public class VisitorEntrance {
         if(timer >= timeToNext) {
             int pos = rnd.nextInt(ENTRANCES);
             int tex = rnd.nextInt(VISITORS);
-            boolean isChild = rnd.nextBoolean();
+            boolean isChild = rnd.nextFloat() > 0.9;
 
             if(isChild)
                 gameManager.addVisitor(new Visitor(gameManager.getBatch(), childTextures[tex], pos * 16 * SCALE_FACTOR + 8 * SCALE_FACTOR, gameManager.getHeight() / 8 * 7, gameManager.getHeight() / 8 * 3, true));
@@ -62,7 +61,7 @@ public class VisitorEntrance {
                 level++;
                 ratio -= 0.2f;
                 if(ratio <= 0)
-                    ratio = 0.2f;
+                    ratio = 0.18f;
             }
         }
     }

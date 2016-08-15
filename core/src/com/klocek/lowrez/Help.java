@@ -12,38 +12,45 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 /**
  * Created by Konrad on 2016-04-17.
  */
-public class Help extends ScreenAdapter {
+public class Help extends GameScreen {
 
-    private SpriteBatch batch;
-    private OrthographicCamera camera;
-    private Viewport viewport;
-    private LowRez game;
     private Texture helpTexture;
 
-    public Help(LowRez lowRez) {
-        this.game = lowRez;
-        batch = new SpriteBatch();
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, GameConstants.WIDTH, GameConstants.HEIGHT);
-        camera.update();
-        viewport = new StretchViewport(GameConstants.WIDTH, GameConstants.HEIGHT, camera);
+    public Help(LowRez game) {
+        super(game);
         helpTexture = new Texture(Gdx.files.internal("help.png"));
     }
 
     @Override
+    public void goLeft() {
+
+    }
+
+    @Override
+    public void goRight() {
+
+    }
+
+    @Override
+    public void pickBeer() {
+
+    }
+
+    @Override
     public void render(float delta) {
-        batch.setProjectionMatrix(camera.projection);
-        batch.setTransformMatrix(camera.view);
+        getBatch().setProjectionMatrix(getCamera().projection);
+        getBatch().setTransformMatrix(getCamera().view);
         Gdx.gl.glClearColor(255,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        camera.update();
-        viewport.apply();
-        batch.begin();
-        batch.draw(helpTexture, 0, 128);
-        batch.end();
+        getCamera().update();
+        getViewport().apply();
+        getBatch().begin();
+        getBatch().draw(helpTexture, 0, 128);
+        getControls().update(delta);
+        getBatch().end();
 
         if(Gdx.input.justTouched()) {
-            game.backToMenu();
+            getGame().backToMenu();
         }
     }
 
@@ -52,8 +59,4 @@ public class Help extends ScreenAdapter {
         helpTexture.dispose();
     }
 
-    @Override
-    public void resize(int width, int height) {
-        viewport.update(width, height);
-    }
 }

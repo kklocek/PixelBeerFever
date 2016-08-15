@@ -1,26 +1,17 @@
 package com.klocek.lowrez;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Scaling;
-import com.badlogic.gdx.utils.viewport.*;
 
 import java.util.ArrayList;
 
 /**
  * Created by Konrad on 2016-04-10.
  */
-public class Main extends ScreenAdapter {
+public class Main extends GameScreen {
 
-    private SpriteBatch batch;
-    private LowRez game;
-    private OrthographicCamera camera;
-    private Controls controls;
     private Player player;
     private VisitorEntrance entrance;
     private ArrayList<Beer> beers;
@@ -29,27 +20,18 @@ public class Main extends ScreenAdapter {
     private BeerTable beerTable;
     private boolean playerLost = false;
     private BitmapFont font;
-    private Viewport viewport;
+
     private BeerLife beerLife;
     private Sound collisionSound, lostSound;
     private boolean isPlayed = false;
-    private int lostBeers = 0;
     private Texture lostTexture;
     private Pause pause;
 
-    private static final int WIDTH = 512, HEIGHT = 512 + 128, BEERS_LOST = 3;
-
     public Main(LowRez game) {
-        super();
-        batch = new SpriteBatch();
-        this.game = game;
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, WIDTH, HEIGHT);
-        camera.update();
+        super(game);
         lostTexture = new Texture(Gdx.files.internal("lost.png"));
         font = new BitmapFont(Gdx.files.internal("font.fnt"), Gdx.files.internal("font.png"), false);
         font.setColor(Color.RED);
-        viewport = new StretchViewport(WIDTH, HEIGHT, camera);
 
         pause = new Pause(this);
         beerLife = new BeerLife(this);
@@ -57,30 +39,29 @@ public class Main extends ScreenAdapter {
         lostSound = Gdx.audio.newSound(Gdx.files.internal("fail.wav"));
         entrance = new VisitorEntrance(this);
         player = new Player(this);
-        controls = new Controls(this);
-        bar = new Bar(batch, HEIGHT / 5);
+        bar = new Bar(getBatch(), getHeight() / 5);
         beers = new ArrayList<>();
-        beerTable = new BeerTable(batch, WIDTH / 8 * 7, HEIGHT / 5);
+        beerTable = new BeerTable(getBatch(), getWidth() / 8 * 7, getHeight() / 5);
         visitors = new ArrayList<>();
     }
 
     @Override
     public void render(float delta) {
-        batch.setProjectionMatrix(camera.projection);
-        batch.setTransformMatrix(camera.view);
+        getBatch().setProjectionMatrix(getCamera().projection);
+        getBatch().setTransformMatrix(getCamera().view);
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        camera.update();
-        viewport.apply();
+        getCamera().update();
+        getViewport().apply();
         if(pause.isPaused()) {
-            batch.begin();
+            getBatch().begin();
             pause.update(delta);
-            batch.end();
+            getBatch().end();
         } else {
             if (!playerLost) {
-                batch.begin();
+                getBatch().begin();
                 super.render(delta);
-                controls.update(delta);
+                getControls().update(delta);
                 bar.update(delta);
                 pause.update(delta);
                 beerTable.update(delta);
@@ -94,7 +75,7 @@ public class Main extends ScreenAdapter {
                     v.update(delta);
                 }
                 beerLife.update(delta);
-                batch.end();
+                getBatch().end();
                 //Colisions
                 for (Beer b : beers) {
                     for (Visitor v : visitors) {
@@ -144,32 +125,34 @@ public class Main extends ScreenAdapter {
                 }
                 Gdx.gl.glClearColor(0, 0, 0, 1);
                 Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-                batch.begin();
-                batch.draw(lostTexture, 0, HEIGHT / 5);
-                font.draw(batch, player.getScore() + "", 344, 376);
-                batch.end();
+                getBatch().begin();
+                getBatch().draw(lostTexture, 0, getHeight() / 5);
+                font.draw(getBatch(), player.getScore() + "", 344, 376);
+                getControls().update(delta);
+                getControls().setIdle(true);
+                getBatch().end();
                 if (Gdx.input.justTouched()) {
-                    game.backToMenu();
+                    getGame().backToMenu();
                 }
             }
         }
 
     }
 
-    public int getWidth() {
-        return WIDTH;
-    }
-
-    public int getHeight() {
-        return HEIGHT;
-    }
-
     public void goLeft() {
         player.goLeft();
+
+        if(getPlayer().isFirstBeerLane())
+            getControls().setLeftArrowIdle(true);
+        else {
+            getControls().setLeftArrowIdle(false);
+            getControls().setRightArrowIdle(false);
+        }
     }
 
     public void pickBeer() {
-        player.pickBeer();
+        if(!playerLost)
+            player.pickBeer();
     }
 
     public boolean isBeer() {
@@ -178,6 +161,13 @@ public class Main extends ScreenAdapter {
 
     public void goRight() {
         player.goRight();
+
+        if(getPlayer().isLastBeerLane())
+            getControls().setRightArrowIdle(true);
+        else {
+            getControls().setRightArrowIdle(false);
+            getControls().setLeftArrowIdle(false);
+        }
     }
 
     public void addBeer(Beer b) {
@@ -188,16 +178,8 @@ public class Main extends ScreenAdapter {
         return beerTable;
     }
 
-    public SpriteBatch getBatch() {
-        return batch;
-    }
-
     public void addVisitor(Visitor v) {
         visitors.add(v);
-    }
-
-    public OrthographicCamera getCamera() {
-        return camera;
     }
 
     public int getScore() {
@@ -209,18 +191,13 @@ public class Main extends ScreenAdapter {
     }
 
     @Override
-    public void resize(int width, int height) {
-        viewport.update(width, height);
-    }
-
-    @Override
     public void dispose() {
         player.dispose();
-        controls.dispose();
+        getControls().dispose();
         bar.dispose();
         //Beer.getBeerTexture().dispose();
         lostTexture.dispose();
-        batch.dispose();
+        getBatch().dispose();
     }
 
 }
