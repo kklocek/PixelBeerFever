@@ -21,14 +21,12 @@ public class Visitor implements Disposable{
     private float timer = 0;
     private boolean isEnded = false;
     private boolean isLost = false;
-    private boolean isChild = false;
 
-    public Visitor(SpriteBatch batch, Texture texture, int x, int y, int yMin, boolean isChild) {
+    public Visitor(SpriteBatch batch, Texture texture, int x, int y, int yMin) {
         this.batch = batch;
         this.x = x;
         this.y = y;
         this.Y_MIN = yMin;
-        this.isChild = isChild;
         TextureRegion[][] t2 = TextureRegion.split(texture, 64, 64);
         TextureRegion [] t3 = new TextureRegion[t2[0].length];
 
@@ -49,11 +47,9 @@ public class Visitor implements Disposable{
             rectangle.setPosition(x - 64, currPos); // :
             textureRectangle.setPosition(x, currPos);
 
-            if(y <= Y_MIN) {
-                if(!isChild)
-                    isLost = true;
+            if(y <= Y_MIN)
                 isEnded = true;
-            }
+
             batch.draw(animation.getKeyFrame(timer, true), x, currPos);
         }
     }
@@ -68,10 +64,6 @@ public class Visitor implements Disposable{
 
     public boolean isEnded() {
         return isEnded;
-    }
-
-    public boolean isChild() {
-        return isChild;
     }
 
     @Override

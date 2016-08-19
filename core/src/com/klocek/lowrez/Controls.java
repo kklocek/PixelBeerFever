@@ -15,10 +15,10 @@ public class Controls implements Disposable {
 
     private SpriteBatch batch;
     private OrthographicCamera camera;
-    private Texture leftArrow, rightArrow, beerButton, beerIdleButton, leftArrowIdle, rightArrowIdle, left, right;
+    private Texture leftArrow, rightArrow, beerButton, beerIdleButton, leftArrowIdle, rightArrowIdle, left, right, beer;
     private GameScreen parent;
     private Vector3 input;
-    private boolean beerIdle = false;
+    private boolean beerIdle = true;
 
     public Controls(GameScreen parent) {
         this.batch = parent.getBatch();
@@ -41,16 +41,22 @@ public class Controls implements Disposable {
         if(Gdx.input.justTouched()) {
             input.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             input = camera.unproject(input);
-            //Checking buttons
             handleInput();
         }
 
         batch.draw(left, 0, 0);
-        if(parent.isBeer() && !beerIdle)
-            batch.draw(beerButton, parent.getWidth() / 4, 0);
-        else
-            batch.draw(beerIdleButton, parent.getWidth() / 4, 0);
+        resolveBeer();
+        batch.draw(beer, parent.getWidth() / 4, 0);
         batch.draw(right, parent.getWidth() / 4 * 3, 0);
+    }
+
+    private void resolveBeer() {
+        if(parent.isBeer())
+            setBeerIdle(false);
+        else if(!beerIdle)
+            setBeerIdle(false);
+        else
+            setBeerIdle(true);
     }
 
     private void handleInput() {
@@ -81,6 +87,14 @@ public class Controls implements Disposable {
             right = rightArrow;
     }
 
+    public void setBeerIdle(boolean status) {
+        if(status)
+            beer = beerIdleButton;
+        else
+            beer = beerButton;
+        beerIdle = status;
+    }
+
     @Override
     public void dispose() {
 
@@ -90,10 +104,11 @@ public class Controls implements Disposable {
         if(b){
             right = rightArrowIdle;
             left = leftArrowIdle;
+            beer = beerButton;
         } else {
             right = rightArrow;
             left = leftArrow;
+            beer = beerIdleButton;
         }
-        beerIdle = b;
     }
 }

@@ -80,19 +80,14 @@ public class Main extends GameScreen {
                 for (Beer b : beers) {
                     for (Visitor v : visitors) {
                         if (v.getBarRectangle().overlaps(b.getBeerSprite().getBoundingRectangle())) {
-                            if (v.isChild()) {
-                                playerLost = true;
-                            } else {
-                                player.addPoint();
-                                b.markEnded();
-                                v.markEnded();
-                                collisionSound.play();
-                            }
+                            player.addPoint();
+                            b.markEnded();
+                            v.markEnded();
+                            collisionSound.play();
                         }
                     }
                 }
 
-                //TODO: CHECK!
                 for (int i = 0; i < beers.size(); i++) {
                     if (!beers.get(i).isWithCollision()) {
                         beerLife.lostBeer();
@@ -129,11 +124,10 @@ public class Main extends GameScreen {
                 getBatch().draw(lostTexture, 0, getHeight() / 5);
                 font.draw(getBatch(), player.getScore() + "", 344, 376);
                 getControls().update(delta);
-                getControls().setIdle(true);
+                getControls().setBeerIdle(false);
+                getControls().setLeftArrowIdle(true);
+                getControls().setRightArrowIdle(true);
                 getBatch().end();
-                if (Gdx.input.justTouched()) {
-                    getGame().backToMenu();
-                }
             }
         }
 
@@ -151,8 +145,11 @@ public class Main extends GameScreen {
     }
 
     public void pickBeer() {
-        if(!playerLost)
+        if(!playerLost) {
             player.pickBeer();
+            getControls().setBeerIdle(true);
+        } else
+            getGame().backToMenu();
     }
 
     public boolean isBeer() {

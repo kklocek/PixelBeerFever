@@ -1,6 +1,7 @@
 package com.klocek.lowrez;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -18,6 +19,7 @@ public class Beer implements Disposable{
     private boolean isEnded;
     private boolean withCollision = true;
     private final int Y_MAX;
+    private Sound lostBeerSound;
 
     static {
         beerTexture = new Texture(Gdx.files.internal("beer.png"));
@@ -31,6 +33,7 @@ public class Beer implements Disposable{
         beerSprite = new Sprite(beerTexture);
         beerSprite.setPosition(x,y);
         Y_MAX = yMax;
+        lostBeerSound = Gdx.audio.newSound(Gdx.files.internal("beer_fail.wav"));
     }
 
     public static Texture getBeerTexture() {
@@ -47,6 +50,7 @@ public class Beer implements Disposable{
             if(y > Y_MAX) {
                 isEnded = true;
                 withCollision = false;
+                lostBeerSound.play();
             }
         }
     }
