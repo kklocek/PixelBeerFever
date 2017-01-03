@@ -189,7 +189,7 @@ public class Main extends GameScreen {
     public void dispose() {
         player.dispose();
         entrance.dispose();
-        Beer.getBeerTexture().dispose();
+        beerTable.dispose();
         beerLife.dispose();
         collisionSound.dispose();
         lostSound.dispose();

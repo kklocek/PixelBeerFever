@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.Disposable;
 /**
  * Created by Konrad on 2016-04-10.
  */
-public class Beer implements Disposable {
+public class Beer {
 
     private static Texture beerTexture;
     private Sprite beerSprite;
@@ -21,14 +21,13 @@ public class Beer implements Disposable {
     private final int Y_MAX;
     private Sound lostBeerSound;
 
-    static {
-        beerTexture = new Texture(Gdx.files.internal("beer.png"));
-    }
-
     public Beer(SpriteBatch batch, int x, int y, int yMax) {
         this.y = y;
         this.batch = batch;
         isEnded = false;
+        if(beerTexture == null) {
+            beerTexture = new Texture(Gdx.files.internal("beer.png"));
+        }
         beerSprite = new Sprite(beerTexture);
         beerSprite.setPosition(x, y);
         Y_MAX = yMax;
@@ -36,6 +35,9 @@ public class Beer implements Disposable {
     }
 
     public static Texture getBeerTexture() {
+        if(beerTexture == null) {
+            beerTexture = new Texture(Gdx.files.internal("beer.png"));
+        }
         return beerTexture;
     }
 
@@ -66,12 +68,12 @@ public class Beer implements Disposable {
         isEnded = true;
     }
 
-    @Override
-    public void dispose() {
-        beerTexture.dispose();
-    }
-
     public boolean isWithCollision() {
         return withCollision;
+    }
+
+    public static void clear() {
+        beerTexture.dispose();
+        beerTexture = null;
     }
 }

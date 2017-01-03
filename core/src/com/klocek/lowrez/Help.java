@@ -9,26 +9,36 @@ import com.badlogic.gdx.graphics.Texture;
  */
 public class Help extends GameScreen {
 
-    private Texture helpTexture;
+    private Texture helpTexture1;
+    private Texture helpTexture2;
+    private Texture actual;
 
     public Help(LowRez game) {
         super(game);
-        helpTexture = new Texture(Gdx.files.internal("help.png"));
+        helpTexture1 = new Texture(Gdx.files.internal("help1.png"));
+        helpTexture2 = new Texture(Gdx.files.internal("help2.png"));
+        actual = helpTexture1;
+        getControls().setRightArrowIdle(false);
+        getControls().setLeftArrowIdle(true);
     }
 
     @Override
     public void goLeft() {
-
+        if(actual == helpTexture2) {
+            actual = helpTexture1;
+            getControls().setLeftArrowIdle(true);
+            getControls().setRightArrowIdle(false);
+        }
     }
 
     @Override
     public void goRight() {
-
-    }
-
-    @Override
-    public void pickBeer() {
-
+        if(actual == helpTexture1) {
+            actual = helpTexture2;
+            getControls().setLeftArrowIdle(false);
+        } else {
+            getGame().backToMenu();
+        }
     }
 
     @Override
@@ -40,18 +50,21 @@ public class Help extends GameScreen {
         getCamera().update();
         getViewport().apply();
         getBatch().begin();
-        getBatch().draw(helpTexture, 0, 128);
+        getBatch().draw(actual, 0, 128);
         getControls().update(delta);
         getBatch().end();
 
+        /*
         if (Gdx.input.justTouched()) {
             getGame().backToMenu();
         }
+        */
     }
 
     @Override
     public void dispose() {
-        helpTexture.dispose();
+        helpTexture1.dispose();
+        helpTexture2.dispose();
     }
 
 }

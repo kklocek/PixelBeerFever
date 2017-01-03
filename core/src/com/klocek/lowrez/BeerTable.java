@@ -2,13 +2,14 @@ package com.klocek.lowrez;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Disposable;
 
 import java.util.Random;
 
 /**
  * Created by Konrad on 2016-04-11.
  */
-public class BeerTable {
+public class BeerTable implements Disposable{
 
     private Texture beerTexture;
     private SpriteBatch batch;
@@ -60,5 +61,10 @@ public class BeerTable {
         } else {
             batch.draw(beerTexture, x, y);
         }
+    }
+
+    @Override
+    public void dispose() {
+        Beer.clear();
     }
 }
