@@ -1,14 +1,8 @@
 package com.klocek.lowrez;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 
 /**
  * Created by Konrad on 2016-04-17.
@@ -41,7 +35,7 @@ public class About extends GameScreen {
     public void render(float delta) {
         getBatch().setProjectionMatrix(getCamera().projection);
         getBatch().setTransformMatrix(getCamera().view);
-        Gdx.gl.glClearColor(255,0,0,1);
+        Gdx.gl.glClearColor(255, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         getCamera().update();
         getViewport().apply();
@@ -50,7 +44,7 @@ public class About extends GameScreen {
         getControls().update(delta);
         getBatch().end();
 
-        if(Gdx.input.justTouched()) {
+        if (Gdx.input.justTouched()) {
             getGame().backToMenu();
         }
     }

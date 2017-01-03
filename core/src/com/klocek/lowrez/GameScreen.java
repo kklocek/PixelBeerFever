@@ -9,7 +9,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 /**
  * Created by Konrad on 2016-08-15.
  */
-public abstract class GameScreen extends ScreenAdapter{
+public abstract class GameScreen extends ScreenAdapter {
 
     private static final int WIDTH = 512, HEIGHT = 512 + 128;
 
@@ -32,9 +32,11 @@ public abstract class GameScreen extends ScreenAdapter{
     }
 
 
-    public abstract void goLeft();
-    public abstract void goRight();
-    public abstract void pickBeer();
+    public void goLeft(){};
+
+    public void goRight(){};
+
+    public void pickBeer(){};
 
     public int getWidth() {
         return WIDTH;

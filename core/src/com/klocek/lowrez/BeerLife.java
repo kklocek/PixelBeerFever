@@ -19,10 +19,8 @@ public class BeerLife implements Disposable {
     private Texture littleBeerTexture;
     private Texture lifesTexture;
     private SpriteBatch batch;
-    private Main gameManager;
 
     public BeerLife(Main gameManager) {
-        this.gameManager = gameManager;
         batch = gameManager.getBatch();
 
         littleBeerTexture = new Texture(Gdx.files.internal("littleBeer.png"));
@@ -31,7 +29,7 @@ public class BeerLife implements Disposable {
 
     public void update(float delta) {
         batch.draw(lifesTexture, X_POS, Y_POS);
-        for(int i = 1; i <= currLifes; i++) {
+        for (int i = 1; i <= currLifes; i++) {
             batch.draw(littleBeerTexture, X_POS + i * SIZE + lifesTexture.getWidth() - 8, Y_POS); //TODO: Better fit!
         }
     }
@@ -43,6 +41,7 @@ public class BeerLife implements Disposable {
     public void lostBeer() {
         currLifes--;
     }
+
     @Override
     public void dispose() {
         littleBeerTexture.dispose();

@@ -41,7 +41,7 @@ public class BeerTable {
     }
 
     public void update(float delta) {
-        if(!isBeerAvailable) {
+        if (!isBeerAvailable) {
             timer += delta;
             if (timer >= timeToNext) {
                 timer = 0;
@@ -50,10 +50,10 @@ public class BeerTable {
                 //!
                 batch.draw(beerTexture, x, y);
                 beers++;
-                if(beers  / 4 > level) {
+                if (beers / 4 > level) {
                     level++;
                     ratio -= 0.2f;
-                    if(ratio <= 0)
+                    if (ratio <= 0)
                         ratio = 0.2f;
                 }
             }

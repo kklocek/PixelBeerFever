@@ -1,32 +1,29 @@
 package com.klocek.lowrez;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class LowRez extends Game {
 
     private Screen game, menu, about, help;
 
-	@Override
-	public void create () {
+    @Override
+    public void create() {
         menu = new Menu(this);
         setScreen(menu);
         game = new Main(this);
         about = new About(this);
         help = new Help(this);
         screen.show();
-	}
+    }
 
     @Override
     public void dispose() {
         super.dispose();
         game.dispose();
         menu.dispose();
+        about.dispose();
+        help.dispose();
     }
 
     public void backToMenu() {

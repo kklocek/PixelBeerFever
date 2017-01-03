@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.Disposable;
 /**
  * Created by Konrad on 2016-04-10.
  */
-public class Player implements Disposable{
+public class Player implements Disposable {
 
     private Texture playerTexture;
     private SpriteBatch batch;
@@ -50,20 +50,20 @@ public class Player implements Disposable{
         playerSprite.setPosition((beerLane - 1) * 16 * SCALE_FACTOR, Y_POS);
         playerSprite.draw(batch);
 
-        if(beerLane == BEER_LANES && gameManager.getBeerTable().isBeerAvailable() && !hasBeer) {
+        if (beerLane == BEER_LANES && gameManager.getBeerTable().isBeerAvailable() && !hasBeer) {
             hasBeer = true;
             gameManager.getBeerTable().pickBeer();
         }
     }
 
     public void goLeft() {
-        if(beerLane > 1)
+        if (beerLane > 1)
             beerLane--;
     }
 
     public void pickBeer() {
-        if(hasBeer) {
-            gameManager.addBeer(new Beer(batch, (beerLane - 1) * 16 * SCALE_FACTOR, HEIGHT / 8 * 3 , HEIGHT / 8 * 6 ));
+        if (hasBeer) {
+            gameManager.addBeer(new Beer(batch, (beerLane - 1) * 16 * SCALE_FACTOR, HEIGHT / 8 * 3, HEIGHT / 8 * 6));
             hasBeer = false;
             beerSound.play();
         } else {
@@ -73,7 +73,7 @@ public class Player implements Disposable{
     }
 
     public void goRight() {
-        if(beerLane < BEER_LANES)
+        if (beerLane < BEER_LANES)
             beerLane++;
     }
 
@@ -99,6 +99,8 @@ public class Player implements Disposable{
 
     @Override
     public void dispose() {
-
+        playerTexture.dispose();
+        beerSound.dispose();
+        wrongSound.dispose();
     }
 }

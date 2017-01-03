@@ -2,8 +2,8 @@ package com.klocek.lowrez;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 
 import java.util.ArrayList;
 
@@ -19,20 +19,17 @@ public class Main extends GameScreen {
     private Bar bar;
     private BeerTable beerTable;
     private boolean playerLost = false;
-    private BitmapFont font;
 
     private BeerLife beerLife;
     private Sound collisionSound, lostSound;
     private boolean isPlayed = false;
     private Texture lostTexture;
     private Pause pause;
+    private ScoreFont scoreFont;
 
     public Main(LowRez game) {
         super(game);
         lostTexture = new Texture(Gdx.files.internal("lost.png"));
-        font = new BitmapFont(Gdx.files.internal("font.fnt"), Gdx.files.internal("font.png"), false);
-        font.setColor(Color.RED);
-
         pause = new Pause(this);
         beerLife = new BeerLife(this);
         collisionSound = Gdx.audio.newSound(Gdx.files.internal("collision.wav"));
@@ -43,6 +40,7 @@ public class Main extends GameScreen {
         beers = new ArrayList<>();
         beerTable = new BeerTable(getBatch(), getWidth() / 8 * 7, getHeight() / 5);
         visitors = new ArrayList<>();
+        scoreFont = new ScoreFont();
     }
 
     @Override
@@ -53,7 +51,7 @@ public class Main extends GameScreen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         getCamera().update();
         getViewport().apply();
-        if(pause.isPaused()) {
+        if (pause.isPaused()) {
             getBatch().begin();
             pause.update(delta);
             getBatch().end();
@@ -122,7 +120,7 @@ public class Main extends GameScreen {
                 Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
                 getBatch().begin();
                 getBatch().draw(lostTexture, 0, getHeight() / 5);
-                font.draw(getBatch(), player.getScore() + "", 344, 376);
+                scoreFont.draw(player.getScore(), getBatch());
                 getControls().update(delta);
                 getControls().setBeerIdle(false);
                 getControls().setLeftArrowIdle(true);
@@ -136,7 +134,7 @@ public class Main extends GameScreen {
     public void goLeft() {
         player.goLeft();
 
-        if(getPlayer().isFirstBeerLane())
+        if (getPlayer().isFirstBeerLane())
             getControls().setLeftArrowIdle(true);
         else {
             getControls().setLeftArrowIdle(false);
@@ -145,7 +143,7 @@ public class Main extends GameScreen {
     }
 
     public void pickBeer() {
-        if(!playerLost) {
+        if (!playerLost) {
             player.pickBeer();
             getControls().setBeerIdle(true);
         } else
@@ -159,7 +157,7 @@ public class Main extends GameScreen {
     public void goRight() {
         player.goRight();
 
-        if(getPlayer().isLastBeerLane())
+        if (getPlayer().isLastBeerLane())
             getControls().setRightArrowIdle(true);
         else {
             getControls().setRightArrowIdle(false);
@@ -190,9 +188,15 @@ public class Main extends GameScreen {
     @Override
     public void dispose() {
         player.dispose();
+        entrance.dispose();
+        Beer.getBeerTexture().dispose();
+        beerLife.dispose();
+        collisionSound.dispose();
+        lostSound.dispose();
+        pause.dispose();
+        scoreFont.dispose();
         getControls().dispose();
         bar.dispose();
-        //Beer.getBeerTexture().dispose();
         lostTexture.dispose();
         getBatch().dispose();
     }

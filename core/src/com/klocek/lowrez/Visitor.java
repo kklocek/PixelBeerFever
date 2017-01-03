@@ -2,7 +2,6 @@ package com.klocek.lowrez;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
@@ -11,7 +10,7 @@ import com.badlogic.gdx.utils.Disposable;
 /**
  * Created by Konrad on 2016-04-10.
  */
-public class Visitor implements Disposable{
+public class Visitor implements Disposable {
 
     private Animation animation;
     private Rectangle rectangle, textureRectangle;
@@ -28,9 +27,9 @@ public class Visitor implements Disposable{
         this.y = y;
         this.Y_MIN = yMin;
         TextureRegion[][] t2 = TextureRegion.split(texture, 64, 64);
-        TextureRegion [] t3 = new TextureRegion[t2[0].length];
+        TextureRegion[] t3 = new TextureRegion[t2[0].length];
 
-        for(int i = 0; i < t2[0].length; i++) {
+        for (int i = 0; i < t2[0].length; i++) {
             t3[i] = t2[0][i];
         }
         animation = new Animation(0.25f, t3);
@@ -40,15 +39,15 @@ public class Visitor implements Disposable{
     }
 
     public void update(float delta) {
-        if(!isEnded) {
+        if (!isEnded) {
             timer += delta;
             y -= delta * 50;
             int currPos = (y / 8) * 8;
             rectangle.setPosition(x - 64, currPos); // :
             textureRectangle.setPosition(x, currPos);
 
-            if(y <= Y_MIN)
-                isEnded = true;
+            if (y <= Y_MIN)
+                isLost = true;
 
             batch.draw(animation.getKeyFrame(timer, true), x, currPos);
         }

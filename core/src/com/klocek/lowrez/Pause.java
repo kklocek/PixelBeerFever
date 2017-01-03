@@ -31,14 +31,14 @@ public class Pause implements Disposable {
     }
 
     public void update(float delta) {
-        if(isPaused)
+        if (isPaused)
             batch.draw(pausedTexture, 160, 236 + 128);
 
         batch.draw(buttonTexture, 8, GameConstants.HEIGHT - 8 - buttonTexture.getHeight());
-        if(Gdx.input.justTouched()) {
+        if (Gdx.input.justTouched()) {
             input.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             input = camera.unproject(input);
-            if(input.x >= 8 && input.x <= 8 + buttonTexture.getWidth() && input.y <= GameConstants.HEIGHT && input.y >= GameConstants.HEIGHT - buttonTexture.getHeight()) {
+            if (input.x >= 8 && input.x <= 8 + buttonTexture.getWidth() && input.y <= GameConstants.HEIGHT && input.y >= GameConstants.HEIGHT - buttonTexture.getHeight()) {
                 isPaused = !isPaused;
             }
         }
@@ -56,5 +56,6 @@ public class Pause implements Disposable {
     @Override
     public void dispose() {
         buttonTexture.dispose();
+        pausedTexture.dispose();
     }
 }

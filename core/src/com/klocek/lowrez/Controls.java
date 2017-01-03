@@ -1,7 +1,6 @@
 package com.klocek.lowrez;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -38,7 +37,7 @@ public class Controls implements Disposable {
     }
 
     public void update(float delta) {
-        if(Gdx.input.justTouched()) {
+        if (Gdx.input.justTouched()) {
             input.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             input = camera.unproject(input);
             handleInput();
@@ -51,9 +50,9 @@ public class Controls implements Disposable {
     }
 
     private void resolveBeer() {
-        if(parent.isBeer())
+        if (parent.isBeer())
             setBeerIdle(false);
-        else if(!beerIdle)
+        else if (!beerIdle)
             setBeerIdle(false);
         else
             setBeerIdle(true);
@@ -61,34 +60,34 @@ public class Controls implements Disposable {
 
     private void handleInput() {
         //Left
-        if(input.x >= 0 && input.x < (parent.getWidth() / 4) && input.y < (parent.getHeight() / 5)) {
+        if (input.x >= 0 && input.x < (parent.getWidth() / 4) && input.y < (parent.getHeight() / 5)) {
             //LEFT
             parent.goLeft();
-        } else if(input.x >= (parent.getWidth() / 4) && input.x < ((parent.getWidth() / 4) * 3) && input.y < (parent.getHeight() / 5)) {
+        } else if (input.x >= (parent.getWidth() / 4) && input.x < ((parent.getWidth() / 4) * 3) && input.y < (parent.getHeight() / 5)) {
             //Button
             parent.pickBeer();
-        } else if(input.x >= ((parent.getWidth() / 4) * 3) && input.x <= parent.getWidth()  && input.y < (parent.getHeight() / 5)) {
+        } else if (input.x >= ((parent.getWidth() / 4) * 3) && input.x <= parent.getWidth() && input.y < (parent.getHeight() / 5)) {
             //Right
             parent.goRight();
         }
     }
 
     public void setLeftArrowIdle(boolean status) {
-        if(status)
+        if (status)
             left = leftArrowIdle;
         else
             left = leftArrow;
     }
 
     public void setRightArrowIdle(boolean status) {
-        if(status)
+        if (status)
             right = rightArrowIdle;
         else
             right = rightArrow;
     }
 
     public void setBeerIdle(boolean status) {
-        if(status)
+        if (status)
             beer = beerIdleButton;
         else
             beer = beerButton;
@@ -97,11 +96,16 @@ public class Controls implements Disposable {
 
     @Override
     public void dispose() {
-
+        leftArrow.dispose();
+        rightArrow.dispose();
+        beerButton.dispose();
+        beerIdleButton.dispose();
+        leftArrowIdle.dispose();
+        rightArrowIdle.dispose();
     }
 
     public void setIdle(boolean b) {
-        if(b){
+        if (b) {
             right = rightArrowIdle;
             left = leftArrowIdle;
             beer = beerButton;
