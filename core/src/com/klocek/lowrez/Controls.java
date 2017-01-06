@@ -59,9 +59,8 @@ public class Controls implements Disposable {
     }
 
     private void handleInput() {
-        //Left
         if (input.x >= 0 && input.x < (parent.getWidth() / 4) && input.y < (parent.getHeight() / 5)) {
-            //LEFT
+            //Left
             parent.goLeft();
         } else if (input.x >= (parent.getWidth() / 4) && input.x < ((parent.getWidth() / 4) * 3) && input.y < (parent.getHeight() / 5)) {
             //Button

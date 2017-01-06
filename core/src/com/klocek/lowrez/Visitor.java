@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.Disposable;
 /**
  * Created by Konrad on 2016-04-10.
  */
-public class Visitor implements Disposable {
+public class Visitor {
 
     private Animation animation;
     private Rectangle rectangle, textureRectangle;
@@ -63,11 +63,6 @@ public class Visitor implements Disposable {
 
     public boolean isEnded() {
         return isEnded;
-    }
-
-    @Override
-    public void dispose() {
-
     }
 
     public void markEnded() {

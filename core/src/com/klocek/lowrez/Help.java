@@ -53,12 +53,6 @@ public class Help extends GameScreen {
         getBatch().draw(actual, 0, 128);
         getControls().update(delta);
         getBatch().end();
-
-        /*
-        if (Gdx.input.justTouched()) {
-            getGame().backToMenu();
-        }
-        */
     }
 
     @Override

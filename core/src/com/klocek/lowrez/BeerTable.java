@@ -48,7 +48,6 @@ public class BeerTable implements Disposable{
                 timer = 0;
                 timeToNext = rnd.nextFloat() * ratio + 1;
                 isBeerAvailable = true;
-                //!
                 batch.draw(beerTexture, x, y);
                 beers++;
                 if (beers / 4 > level) {

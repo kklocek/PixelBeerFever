@@ -17,21 +17,6 @@ public class About extends GameScreen {
     }
 
     @Override
-    public void goLeft() {
-
-    }
-
-    @Override
-    public void goRight() {
-
-    }
-
-    @Override
-    public void pickBeer() {
-
-    }
-
-    @Override
     public void render(float delta) {
         getBatch().setProjectionMatrix(getCamera().projection);
         getBatch().setTransformMatrix(getCamera().view);
