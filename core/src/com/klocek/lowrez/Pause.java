@@ -15,13 +15,13 @@ public class Pause implements Disposable {
 
     private Texture buttonTexture;
     private Texture pausedTexture;
-    private Main gameManager;
+    private Game gameManager;
     private SpriteBatch batch;
     private Camera camera;
     private Vector3 input;
     private boolean isPaused = false;
 
-    public Pause(Main gameManager) {
+    public Pause(Game gameManager) {
         this.gameManager = gameManager;
         batch = gameManager.getBatch();
         camera = gameManager.getCamera();

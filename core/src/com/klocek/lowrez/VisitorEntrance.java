@@ -14,24 +14,25 @@ public class VisitorEntrance implements Disposable {
     private static final int ENTRANCES = 4;
     private static final int VISITORS = 4;
     private final int SCALE_FACTOR;
-    private float timer = 0;
+    private float timer;
     private float timeToNext;
     private Random rnd;
     private Texture[] playerTextures;
-    private Main gameManager;
-    private float ratio = 2;
-    private int level = 1;
-    private int previousEntrance = -1;
+    private Game gameManager;
+    private float ratio;
+    private int level;
+    private int previousEntrance;
 
-    public VisitorEntrance(Main gameManager) {
+    public VisitorEntrance(Game gameManager) {
         rnd = new Random();
-        timeToNext = rnd.nextFloat() * 2 + 1;
         playerTextures = new Texture[VISITORS];
         this.gameManager = gameManager;
 
         SCALE_FACTOR = GameConstants.SCALE_FACTOR;
-        for (int i = 0; i < VISITORS; i++)
+        for (int i = 0; i < VISITORS; i++) {
             playerTextures[i] = new Texture(Gdx.files.internal("visitor" + (i + 1) + ".png"));
+        }
+        reset();
     }
 
     public void update(float delta) {
@@ -56,6 +57,14 @@ public class VisitorEntrance implements Disposable {
                     ratio = 0.18f;
             }
         }
+    }
+
+    public void reset() {
+        level = 1;
+        previousEntrance = -1;
+        ratio = 2;
+        timer = 0;
+        timeToNext = rnd.nextFloat() * 2 + 1;
     }
 
     @Override

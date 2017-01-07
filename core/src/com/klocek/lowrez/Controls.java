@@ -20,8 +20,8 @@ public class Controls implements Disposable {
     private boolean beerIdle = true;
 
     public Controls(GameScreen parent) {
-        this.batch = parent.getBatch();
-        this.camera = parent.getCamera();
+        batch = parent.getBatch();
+        camera = parent.getCamera();
         this.parent = parent;
 
         input = new Vector3();
@@ -113,5 +113,11 @@ public class Controls implements Disposable {
             left = leftArrow;
             beer = beerIdleButton;
         }
+    }
+
+    public void reset() {
+        setLeftArrowIdle(true);
+        setRightArrowIdle(false);
+        setBeerIdle(true);
     }
 }

@@ -12,7 +12,7 @@ It's a simple "Tapper" clone from arcade systems. You are a waiter, your task is
 
 ## Where can I get a build?
 
-[Android version](https://www.dropbox.com/s/lkur1u1xyl5bl50/pixel-beer-fever.apk?dl=0)
+[Android version](https://www.dropbox.com/s/do9ey7g26xfvxio/pixel-beer-fever.apk?dl=0)
 
 ## How to build
 
@@ -27,7 +27,7 @@ After spending lot of time for doing other things I finally managed to finish it
 
 Code is very strange - after jam I don't want to spend much time on this project, I know where are problems with that. However - you can fork it and make it awesome ;) .
 
-Maybe this game will be on Google Play store - if not I think it could be some resource for learning basics of LibGDX game development.
+Maybe this game will be on Google Play store - I will attach link if that happens. I think it could be some resource for learning basics of LibGDX game development.
 
 ## License
 MIT

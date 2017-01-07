@@ -20,7 +20,7 @@ public class BeerLife implements Disposable {
     private Texture lifesTexture;
     private SpriteBatch batch;
 
-    public BeerLife(Main gameManager) {
+    public BeerLife(Game gameManager) {
         batch = gameManager.getBatch();
 
         littleBeerTexture = new Texture(Gdx.files.internal("littleBeer.png"));
@@ -40,6 +40,10 @@ public class BeerLife implements Disposable {
 
     public void lostBeer() {
         currLifes--;
+    }
+
+    public void reset() {
+        currLifes = LIFES;
     }
 
     @Override

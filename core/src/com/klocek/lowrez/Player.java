@@ -17,10 +17,10 @@ public class Player implements Disposable {
     private Sprite playerSprite;
     private Sound beerSound, wrongSound;
 
-    private Main gameManager;
+    private Game gameManager;
     private int beerLane;
     private int score;
-    private boolean hasBeer = false;
+    private boolean hasBeer;
 
     private static final int BEER_LANES = 4;
     private static final int RESOLUTION = 64;
@@ -29,7 +29,7 @@ public class Player implements Disposable {
     private final int SCALE_FACTOR;
     private final int Y_POS;
 
-    public Player(Main gameManager) {
+    public Player(Game gameManager) {
         playerTexture = new Texture(Gdx.files.internal("player.png"));
         playerSprite = new Sprite(playerTexture);
         beerSound = Gdx.audio.newSound(Gdx.files.internal("beer.wav"));
@@ -42,8 +42,7 @@ public class Player implements Disposable {
 
         SCALE_FACTOR = WIDTH / RESOLUTION;
         Y_POS = 8 * SCALE_FACTOR - 1 + 128;
-        beerLane = 1;
-        score = 0;
+        reset();
     }
 
     public void update(float delta) {
@@ -67,7 +66,6 @@ public class Player implements Disposable {
             hasBeer = false;
             beerSound.play();
         } else {
-            //TODO: Sound?
             wrongSound.play();
         }
     }
@@ -95,6 +93,12 @@ public class Player implements Disposable {
 
     public int getScore() {
         return score;
+    }
+
+    public void reset() {
+        beerLane = 1;
+        score = 0;
+        hasBeer = false;
     }
 
     @Override

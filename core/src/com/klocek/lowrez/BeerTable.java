@@ -14,23 +14,21 @@ public class BeerTable implements Disposable{
     private Texture beerTexture;
     private SpriteBatch batch;
     private boolean isBeerAvailable;
-    private float timer = 0;
+    private float timer;
     private float timeToNext;
     private Random rnd;
     private int x, y;
-    private float ratio = 1.4f;
-    private int beers = 0;
-    private int level = 1;
+    private float ratio;
+    private int beers;
+    private int level;
 
     public BeerTable(SpriteBatch batch, int x, int y) {
         beerTexture = Beer.getBeerTexture();
         this.batch = batch;
-        isBeerAvailable = false;
         this.x = x;
         this.y = y;
-
         rnd = new Random();
-        timeToNext = rnd.nextFloat() * 1.2f + 1;
+        reset();
     }
 
     public boolean isBeerAvailable() {
@@ -60,6 +58,15 @@ public class BeerTable implements Disposable{
         } else {
             batch.draw(beerTexture, x, y);
         }
+    }
+
+    public void reset() {
+        isBeerAvailable = false;
+        timeToNext = rnd.nextFloat() * 1.2f + 1;
+        timer = 0;
+        beers = 0;
+        level = 1;
+        ratio = 1.4f;
     }
 
     @Override

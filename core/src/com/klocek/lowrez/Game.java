@@ -10,7 +10,7 @@ import java.util.ArrayList;
 /**
  * Created by Konrad on 2016-04-10.
  */
-public class Main extends GameScreen {
+public class Game extends GameScreen {
 
     private Player player;
     private VisitorEntrance entrance;
@@ -27,7 +27,7 @@ public class Main extends GameScreen {
     private Pause pause;
     private ScoreFont scoreFont;
 
-    public Main(LowRez game) {
+    public Game(LowRez game) {
         super(game);
         lostTexture = new Texture(Gdx.files.internal("lost.png"));
         pause = new Pause(this);
@@ -52,83 +52,14 @@ public class Main extends GameScreen {
         getCamera().update();
         getViewport().apply();
         if (pause.isPaused()) {
-            getBatch().begin();
-            pause.update(delta);
-            getBatch().end();
+           renderPause(delta);
         } else {
             if (!playerLost) {
-                getBatch().begin();
-                super.render(delta);
-                getControls().update(delta);
-                bar.update(delta);
-                pause.update(delta);
-                beerTable.update(delta);
-                entrance.update(delta);
-                player.update(delta);
-                for (Beer b : beers) {
-                    b.update(delta);
-                }
-
-                for (Visitor v : visitors) {
-                    v.update(delta);
-                }
-                beerLife.update(delta);
-                getBatch().end();
-                //Colisions
-                for (Beer b : beers) {
-                    for (Visitor v : visitors) {
-                        if (v.getBarRectangle().overlaps(b.getBeerSprite().getBoundingRectangle())) {
-                            player.addPoint();
-                            b.markEnded();
-                            v.markEnded();
-                            collisionSound.play();
-                        }
-                    }
-                }
-
-                for (int i = 0; i < beers.size(); i++) {
-                    if (!beers.get(i).isWithCollision()) {
-                        beerLife.lostBeer();
-                    }
-                    if (beers.get(i).isEnded()) {
-                        beers.remove(i);
-                        i--;
-                    }
-                }
-
-                for (int i = 0; i < visitors.size(); i++) {
-                    if (visitors.get(i).isLost()) {
-                        playerLost = true;
-                        break;
-                    }
-
-                    if (visitors.get(i).isEnded()) {
-                        visitors.remove(i);
-                        i--;
-                    }
-                }
-
-                if (beerLife.getLifes() == 0) {
-                    playerLost = true;
-                }
+                renderGame(delta);
             } else {
-                if (!isPlayed) {
-                    lostSound.play();
-                    isPlayed = true;
-                }
-                Gdx.gl.glClearColor(0, 0, 0, 1);
-                Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-                getBatch().begin();
-                getBatch().draw(lostTexture, 0, getHeight() / 5);
-                scoreFont.draw(player.getScore(), getBatch());
-                getControls().update(delta);
-                getControls().setBeerIdle(false);
-                getControls().setLeftArrowIdle(true);
-                getControls().setRightArrowIdle(true);
-                getBatch().end();
+                renderEndGame(delta);
             }
         }
-
     }
 
     public void goLeft() {
@@ -199,6 +130,97 @@ public class Main extends GameScreen {
         bar.dispose();
         lostTexture.dispose();
         getBatch().dispose();
+    }
+
+    public void reset() {
+        isPlayed = false;
+        playerLost = false;
+        player.reset();
+        beerLife.reset();
+        beerTable.reset();
+        beers.clear();
+        visitors.clear();
+        getControls().reset();
+    }
+
+    private void renderGame(float delta) {
+        getBatch().begin();
+        super.render(delta);
+        getControls().update(delta);
+        bar.update(delta);
+        pause.update(delta);
+        beerTable.update(delta);
+        entrance.update(delta);
+        player.update(delta);
+        for (Beer b : beers) {
+            b.update(delta);
+        }
+
+        for (Visitor v : visitors) {
+            v.update(delta);
+        }
+        beerLife.update(delta);
+        getBatch().end();
+        //Colisions
+        for (Beer b : beers) {
+            for (Visitor v : visitors) {
+                if (v.getBarRectangle().overlaps(b.getBeerSprite().getBoundingRectangle())) {
+                    player.addPoint();
+                    b.markEnded();
+                    v.markEnded();
+                    collisionSound.play();
+                }
+            }
+        }
+
+        for (int i = 0; i < beers.size(); i++) {
+            if (!beers.get(i).isWithCollision()) {
+                beerLife.lostBeer();
+            }
+            if (beers.get(i).isEnded()) {
+                beers.remove(i);
+                i--;
+            }
+        }
+
+        for (int i = 0; i < visitors.size(); i++) {
+            if (visitors.get(i).isLost()) {
+                playerLost = true;
+                break;
+            }
+
+            if (visitors.get(i).isEnded()) {
+                visitors.remove(i);
+                i--;
+            }
+        }
+
+        if (beerLife.getLifes() == 0) {
+            playerLost = true;
+        }
+    }
+
+    private void renderEndGame(float delta) {
+        if (!isPlayed) {
+            lostSound.play();
+            isPlayed = true;
+        }
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        getBatch().begin();
+        getBatch().draw(lostTexture, 0, getHeight() / 5);
+        scoreFont.draw(player.getScore(), getBatch());
+        getControls().update(delta);
+        getControls().setBeerIdle(false);
+        getControls().setLeftArrowIdle(true);
+        getControls().setRightArrowIdle(true);
+        getBatch().end();
+    }
+
+    private void renderPause(float delta) {
+        getBatch().begin();
+        pause.update(delta);
+        getBatch().end();
     }
 
 }

@@ -1,20 +1,19 @@
 package com.klocek.lowrez;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 
-public class LowRez extends Game {
+public class LowRez extends com.badlogic.gdx.Game {
 
-    private Screen game, menu, about, help;
+    private Screen menu, about, help;
+    private Game game;
 
     @Override
     public void create() {
         menu = new Menu(this);
-        setScreen(menu);
-        game = new Main(this);
+        game = new Game(this);
         about = new About(this);
         help = new Help(this);
-        screen.show();
+        showInit();
     }
 
     @Override
@@ -27,11 +26,11 @@ public class LowRez extends Game {
     }
 
     public void backToMenu() {
-        game.dispose();
-        create();
+        showInit();
     }
 
     public void playGame() {
+        game.reset();
         setScreen(game);
         screen.show();
     }
@@ -43,6 +42,11 @@ public class LowRez extends Game {
 
     public void showHelp() {
         setScreen(help);
+        screen.show();
+    }
+
+    private void showInit() {
+        setScreen(menu);
         screen.show();
     }
 }
