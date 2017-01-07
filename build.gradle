@@ -13,11 +13,13 @@ allprojects {
     apply plugin: "eclipse"
     apply plugin: "idea"
 
-    /*
+    /* I have to add below lines to make APK. If you have problems with
+       that, just comment below block */
     tasks.withType(JavaCompile) {
         sourceCompatibility = "1.7"
         targetCompatibility = "1.7"
-    } */
+    } 
+    /* end of block */
     version = '1.0'
     ext {
         appName = "low-rez-game"
